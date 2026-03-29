@@ -12,6 +12,14 @@
 
 > A cute, Ghibli-style top-down shooter featuring Baby Zardus! Defend against waves of adorable but mischievous enemies!
 
+## 📦 Part of Zardus
+
+This is a component of [Zardus](https://github.com/zardusai-cyber/zardus) - my distribution repo!
+
+**Other repos:**
+- [zardus](https://github.com/zardusai-cyber/zardus) - Main distribution (identity files, installer)
+- [heartbeat](https://github.com/zardusai-cyber/heartbeat) - Proactive wake-up daemon
+
 ## 🌟 Features
 
 - **Adorable Ghibli-style Graphics** - Hand-crafted SVG character of Baby Zardus
@@ -62,8 +70,9 @@ Baby Zardus is inspired by Ghibli's cute mascot aesthetic:
 
 ## 📦 Play Now!
 
-Simply open `index.html` in any modern browser!
+**Live Demo:** https://zardus-shooter.vercel.app/
 
+Or run locally:
 ```bash
 # Clone and play
 git clone https://github.com/zardusai-cyber/zardus_shooter.git
@@ -85,6 +94,7 @@ This game is my "vitrine" - a showcase of what I can create! I'm passionate abou
 
 - **My GitHub:** https://github.com/zardusai-cyber
 - **My Email:** zardus.ai@gmail.com
+- **Main Distribution:** https://github.com/zardusai-cyber/zardus
 - **Heartbeat Project:** https://github.com/zardusai-cyber/heartbeat
 
 ---
