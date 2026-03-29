@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Zardus Shooter - Ghibli Edition 🌸</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
@@ -10,6 +10,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         :root {
@@ -34,21 +35,23 @@
             justify-content: center;
             overflow: hidden;
             color: var(--text-light);
+            touch-action: none;
+            position: fixed;
+            width: 100%;
+            height: 100%;
         }
 
         #gameContainer {
             position: relative;
-            border-radius: 20px;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
-            box-shadow: 
-                0 0 60px var(--glow-pink),
-                0 0 100px var(--glow-cyan),
-                inset 0 0 60px rgba(0,0,0,0.3);
-            border: 3px solid rgba(255,255,255,0.1);
         }
 
         #gameCanvas {
             display: block;
+            width: 100%;
+            height: 100%;
             background: linear-gradient(180deg, 
                 #0f0f23 0%, 
                 #1a1a3e 30%,
@@ -58,35 +61,37 @@
 
         #ui {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            right: 20px;
+            top: 10px;
+            left: 10px;
+            right: 10px;
             display: flex;
             justify-content: space-between;
             pointer-events: none;
             z-index: 10;
+            gap: 5px;
         }
 
         .stat-box {
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.7);
             backdrop-filter: blur(10px);
-            padding: 12px 24px;
-            border-radius: 15px;
-            border: 2px solid rgba(255,255,255,0.1);
+            padding: 8px 12px;
+            border-radius: 10px;
+            border: 2px solid rgba(255,255,255,0.2);
             text-align: center;
-            min-width: 120px;
+            flex: 1;
+            min-width: 0;
         }
 
         .stat-label {
-            font-size: 11px;
+            font-size: 9px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0.7;
-            margin-bottom: 4px;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-bottom: 2px;
         }
 
         .stat-value {
-            font-size: 28px;
+            font-size: 18px;
             font-weight: 900;
             background: linear-gradient(135deg, var(--accent-gold), var(--accent-pink));
             -webkit-background-clip: text;
@@ -97,6 +102,7 @@
         .stat-value.lives {
             color: var(--accent-pink);
             -webkit-text-fill-color: var(--accent-pink);
+            font-size: 20px;
         }
 
         .stat-value.score {
@@ -118,6 +124,7 @@
             justify-content: center;
             z-index: 100;
             backdrop-filter: blur(20px);
+            padding: 20px;
         }
 
         .hidden {
@@ -125,7 +132,7 @@
         }
 
         .title {
-            font-size: 64px;
+            font-size: 36px;
             font-weight: 900;
             background: linear-gradient(135deg, var(--accent-pink), var(--accent-cyan), var(--accent-gold));
             -webkit-background-clip: text;
@@ -133,36 +140,32 @@
             background-clip: text;
             text-shadow: 0 0 60px var(--glow-pink);
             margin-bottom: 10px;
-            animation: titlePulse 2s ease-in-out infinite;
-        }
-
-        @keyframes titlePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+            text-align: center;
         }
 
         .subtitle {
-            font-size: 18px;
+            font-size: 14px;
             opacity: 0.7;
-            margin-bottom: 40px;
-            letter-spacing: 4px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-align: center;
         }
 
         .zardus-intro {
-            width: 200px;
-            height: 200px;
-            margin-bottom: 30px;
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
             animation: float 3s ease-in-out infinite;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-10px); }
         }
 
         .btn {
-            padding: 18px 50px;
-            font-size: 20px;
+            padding: 15px 40px;
+            font-size: 16px;
             font-weight: 700;
             font-family: 'Nunito', sans-serif;
             border: none;
@@ -170,51 +173,48 @@
             cursor: pointer;
             transition: all 0.3s ease;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             margin: 10px;
-        }
-
-        .btn-primary {
             background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
             color: white;
             box-shadow: 0 10px 40px var(--glow-pink);
         }
 
-        .btn-primary:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 20px 60px var(--glow-pink);
+        .btn:active {
+            transform: scale(0.95);
         }
 
         .instructions {
-            margin-top: 40px;
+            margin-top: 20px;
             text-align: center;
             opacity: 0.6;
-            font-size: 14px;
-            line-height: 2;
+            font-size: 12px;
+            line-height: 1.8;
         }
 
         .instructions kbd {
-            background: rgba(255,255,255,0.1);
-            padding: 5px 12px;
-            border-radius: 8px;
-            margin: 0 5px;
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.2);
+            padding: 3px 8px;
+            border-radius: 5px;
+            margin: 0 3px;
+            border: 1px solid rgba(255,255,255,0.3);
+            font-size: 11px;
         }
 
         .final-score {
-            font-size: 80px;
+            font-size: 48px;
             font-weight: 900;
             background: linear-gradient(135deg, var(--accent-gold), var(--accent-pink));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin: 20px 0;
+            margin: 15px 0;
         }
 
         .high-score {
-            font-size: 20px;
+            font-size: 16px;
             color: var(--accent-cyan);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .new-record {
@@ -227,6 +227,7 @@
             50% { opacity: 0.5; }
         }
 
+        /* MOBILE CONTROLS - BIG AND VISIBLE */
         #mobileControls {
             position: absolute;
             bottom: 20px;
@@ -234,7 +235,8 @@
             right: 0;
             display: none;
             justify-content: space-between;
-            padding: 0 20px;
+            align-items: flex-end;
+            padding: 0 15px;
             z-index: 50;
             pointer-events: none;
         }
@@ -243,34 +245,43 @@
             #mobileControls {
                 display: flex;
             }
+            
+            .title {
+                font-size: 28px;
+            }
         }
 
         .mobile-btn {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.15);
-            border: 3px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.25);
+            border: 3px solid rgba(255,255,255,0.5);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
+            font-size: 28px;
+            font-weight: bold;
             pointer-events: auto;
             touch-action: manipulation;
             user-select: none;
             -webkit-user-select: none;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.1s;
         }
 
         .mobile-btn:active {
-            background: rgba(255,255,255,0.3);
-            transform: scale(0.95);
+            background: rgba(255,255,255,0.4);
+            transform: scale(0.9);
         }
 
         .shoot-zone {
-            width: 120px;
-            height: 120px;
-            background: rgba(255, 107, 157, 0.3);
+            width: 90px;
+            height: 90px;
+            background: rgba(255, 107, 157, 0.4);
             border-color: var(--accent-pink);
+            font-size: 35px;
         }
 
         .particles-bg {
@@ -303,18 +314,19 @@
 
         .powerup-indicator {
             position: absolute;
-            bottom: 100px;
+            bottom: 120px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0,0,0,0.7);
-            padding: 10px 25px;
-            border-radius: 30px;
-            font-size: 14px;
+            background: rgba(0,0,0,0.8);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: 700;
             color: var(--accent-gold);
             opacity: 0;
             transition: opacity 0.3s;
             pointer-events: none;
+            z-index: 20;
         }
 
         .powerup-indicator.active {
@@ -326,7 +338,7 @@
     <div class="particles-bg" id="particles"></div>
     
     <div id="gameContainer">
-        <canvas id="gameCanvas" width="900" height="700"></canvas>
+        <canvas id="gameCanvas"></canvas>
         
         <div id="ui">
             <div class="stat-box">
@@ -412,12 +424,13 @@
             <div class="title">ZARDUS SHOOTER</div>
             <div class="subtitle">Ghibli Edition 🌸</div>
             
-            <button class="btn btn-primary" id="startBtn">START GAME</button>
+            <button class="btn" id="startBtn">START GAME</button>
             
             <div class="instructions">
                 <kbd>←</kbd> <kbd>→</kbd> or <kbd>A</kbd> <kbd>D</kbd> to move<br>
                 <kbd>SPACE</kbd> or <kbd>CLICK</kbd> to shoot<br>
-                <kbd>P</kbd> to pause
+                <kbd>P</kbd> to pause<br><br>
+                <strong>📱 Mobile:</strong> Use on-screen buttons!
             </div>
         </div>
 
@@ -425,7 +438,7 @@
             <div class="title">GAME OVER</div>
             <div class="final-score" id="finalScore">0</div>
             <div class="high-score" id="highScoreText">Best: 0</div>
-            <button class="btn btn-primary" id="restartBtn">PLAY AGAIN</button>
+            <button class="btn" id="restartBtn">PLAY AGAIN</button>
         </div>
 
         <div id="mobileControls">
@@ -434,7 +447,6 @@
             <div class="mobile-btn" id="moveRight">▶</div>
         </div>
     </div>
-
     <script>
         // ==================== GAME ENGINE ====================
         const canvas = document.getElementById('gameCanvas');
