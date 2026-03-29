@@ -366,26 +366,49 @@
                         </feMerge>
                     </filter>
                 </defs>
-                <ellipse cx="100" cy="130" rx="55" ry="60" fill="url(#bodyGrad)" filter="url(#glow)"/>
-                <ellipse cx="100" cy="145" rx="35" ry="35" fill="#d4f1ff" opacity="0.6"/>
-                <circle cx="100" cy="75" r="50" fill="url(#bodyGrad)" filter="url(#glow)"/>
-                <path d="M75 35 Q85 15 100 25 Q115 15 125 35" stroke="#5eb8d4" stroke-width="8" fill="none" stroke-linecap="round"/>
-                <circle cx="85" cy="28" r="8" fill="#5eb8d4"/>
-                <circle cx="100" cy="20" r="10" fill="#5eb8d4"/>
-                <circle cx="115" cy="28" r="8" fill="#5eb8d4"/>
-                <ellipse cx="80" cy="70" rx="12" ry="14" fill="#2d3436"/>
-                <ellipse cx="120" cy="70" rx="12" ry="14" fill="#2d3436"/>
-                <circle cx="84" cy="66" r="5" fill="white"/>
-                <circle cx="124" cy="66" r="5" fill="white"/>
-                <ellipse cx="65" cy="82" rx="12" ry="8" fill="url(#cheekGrad)"/>
-                <ellipse cx="135" cy="82" rx="12" ry="8" fill="url(#cheekGrad)"/>
-                <path d="M85 90 Q100 105 115 90" stroke="#2d3436" stroke-width="4" fill="none" stroke-linecap="round"/>
-                <ellipse cx="40" cy="110" rx="25" ry="35" fill="rgba(255,255,255,0.4)" transform="rotate(-20 40 110)"/>
-                <ellipse cx="160" cy="110" rx="25" ry="35" fill="rgba(255,255,255,0.4)" transform="rotate(20 160 110)"/>
-                <ellipse cx="50" cy="140" rx="15" ry="20" fill="url(#bodyGrad)" transform="rotate(-30 50 140)"/>
-                <ellipse cx="150" cy="140" rx="15" ry="20" fill="url(#bodyGrad)" transform="rotate(30 150 140)"/>
-                <ellipse cx="75" cy="185" rx="20" ry="12" fill="url(#bodyGrad)"/>
-                <ellipse cx="125" cy="185" rx="20" ry="12" fill="url(#bodyGrad)"/>
+                
+                <!-- Chubby Round Body -->
+                <ellipse cx="100" cy="120" rx="50" ry="55" fill="url(#bodyGrad)" filter="url(#glow)"/>
+                
+                <!-- Cute Round Belly -->
+                <circle cx="100" cy="130" r="30" fill="#d4f1ff" opacity="0.7"/>
+                
+                <!-- Round Head -->
+                <circle cx="100" cy="70" r="45" fill="url(#bodyGrad)" filter="url(#glow)"/>
+                
+                <!-- Fluffy Hair -->
+                <circle cx="80" cy="35" r="12" fill="#5eb8d4"/>
+                <circle cx="100" cy="28" r="14" fill="#5eb8d4"/>
+                <circle cx="120" cy="35" r="12" fill="#5eb8d4"/>
+                <circle cx="90" cy="30" r="10" fill="#5eb8d4"/>
+                <circle cx="110" cy="30" r="10" fill="#5eb8d4"/>
+                
+                <!-- BIG Cute Eyes -->
+                <ellipse cx="82" cy="68" rx="14" ry="16" fill="#2d3436"/>
+                <ellipse cx="118" cy="68" rx="14" ry="16" fill="#2d3436"/>
+                <circle cx="86" cy="63" r="6" fill="white"/>
+                <circle cx="122" cy="63" r="6" fill="white"/>
+                <circle cx="80" cy="72" r="3" fill="white" opacity="0.6"/>
+                <circle cx="116" cy="72" r="3" fill="white" opacity="0.6"/>
+                
+                <!-- Blush -->
+                <ellipse cx="65" cy="78" rx="14" ry="9" fill="url(#cheekGrad)"/>
+                <ellipse cx="135" cy="78" rx="14" ry="9" fill="url(#cheekGrad)"/>
+                
+                <!-- Tiny Cute Smile -->
+                <path d="M90 85 Q100 95 110 85" stroke="#2d3436" stroke-width="3" fill="none" stroke-linecap="round"/>
+                
+                <!-- Tiny Arms -->
+                <ellipse cx="55" cy="115" rx="18" ry="14" fill="url(#bodyGrad)" transform="rotate(-20 55 115)"/>
+                <ellipse cx="145" cy="115" rx="18" ry="14" fill="url(#bodyGrad)" transform="rotate(20 145 115)"/>
+                
+                <!-- Tiny Feet -->
+                <ellipse cx="75" cy="170" rx="18" ry="12" fill="url(#bodyGrad)"/>
+                <ellipse cx="125" cy="170" rx="18" ry="12" fill="url(#bodyGrad)"/>
+                
+                <!-- Tiny Wings (small, cute, not butterfly!) -->
+                <ellipse cx="45" cy="100" rx="18" ry="25" fill="rgba(255,255,255,0.5)" transform="rotate(-25 45 100)"/>
+                <ellipse cx="155" cy="100" rx="18" ry="25" fill="rgba(255,255,255,0.5)" transform="rotate(25 155 100)"/>
             </svg>
             
             <div class="title">ZARDUS SHOOTER</div>
@@ -805,22 +828,138 @@
             }
 
             draw(ctx) {
-                for (let i = 0; i < this.trail.length; i++) {
-                    const alpha = i / this.trail.length * 0.5;
-                    const size = this.radius * (i / this.trail.length);
-                    ctx.fillStyle = `rgba(255, 217, 61, ${alpha})`;
-                    ctx.beginPath();
-                    ctx.arc(this.trail[i].x, this.trail[i].y, size, 0, Math.PI * 2);
-                    ctx.fill();
+                ctx.save();
+                ctx.translate(this.x, this.y + this.bobOffset);
+                
+                if (this.invincible > 0 && Math.floor(this.invincible * 10) % 2 === 0) {
+                    ctx.globalAlpha = 0.5;
                 }
 
-                ctx.fillStyle = '#ffd93d';
-                ctx.shadowColor = '#ffd93d';
-                ctx.shadowBlur = 15;
+                // SMALL cute wings (not butterfly!)
+                const wingFlap = Math.sin(this.wingAngle) * 0.15;
+                ctx.save();
+                ctx.translate(-28, -5);
+                ctx.rotate(-0.2 + wingFlap);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
                 ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.ellipse(0, 0, 15, 22, 0, 0, Math.PI * 2);
                 ctx.fill();
-                ctx.shadowBlur = 0;
+                ctx.restore();
+
+                ctx.save();
+                ctx.translate(28, -5);
+                ctx.rotate(0.2 - wingFlap);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                ctx.beginPath();
+                ctx.ellipse(0, 0, 15, 22, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+
+                // Chubby round body gradient
+                const bodyGrad = ctx.createRadialGradient(0, -10, 0, 0, 0, 35);
+                bodyGrad.addColorStop(0, '#b8e6ff');
+                bodyGrad.addColorStop(1, '#7ec8e3');
+                
+                // Round chubby body
+                ctx.fillStyle = bodyGrad;
+                ctx.beginPath();
+                ctx.ellipse(0, 5, 28, 32, 0, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Cute belly
+                ctx.fillStyle = '#d4f1ff';
+                ctx.beginPath();
+                ctx.ellipse(0, 10, 18, 20, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Round head
+                ctx.fillStyle = bodyGrad;
+                ctx.beginPath();
+                ctx.arc(0, -25, 26, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Fluffy hair tufts
+                ctx.fillStyle = '#5eb8d4';
+                ctx.beginPath();
+                ctx.arc(-10, -48, 8, 0, Math.PI * 2);
+                ctx.arc(0, -52, 10, 0, Math.PI * 2);
+                ctx.arc(10, -48, 8, 0, Math.PI * 2);
+                ctx.arc(-5, -50, 7, 0, Math.PI * 2);
+                ctx.arc(5, -50, 7, 0, Math.PI * 2);
+                ctx.fill();
+
+                // BIG cute eyes
+                ctx.fillStyle = '#2d3436';
+                ctx.beginPath();
+                ctx.ellipse(-9, -27, 9, 11, 0, 0, Math.PI * 2);
+                ctx.ellipse(9, -27, 9, 11, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Eye highlights
+                ctx.fillStyle = 'white';
+                ctx.beginPath();
+                ctx.arc(-6, -30, 4, 0, Math.PI * 2);
+                ctx.arc(12, -30, 4, 0, Math.PI * 2);
+                ctx.fill();
+                
+                // Secondary highlights
+                ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                ctx.beginPath();
+                ctx.arc(-10, -24, 2, 0, Math.PI * 2);
+                ctx.arc(8, -24, 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Cute blush
+                ctx.fillStyle = 'rgba(255, 179, 186, 0.6)';
+                ctx.beginPath();
+                ctx.ellipse(-18, -18, 9, 6, 0, 0, Math.PI * 2);
+                ctx.ellipse(18, -18, 9, 6, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Tiny cute smile
+                ctx.strokeStyle = '#2d3436';
+                ctx.lineWidth = 2.5;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.arc(0, -20, 7, 0.2, Math.PI - 0.2);
+                ctx.stroke();
+
+                // Tiny arms
+                ctx.fillStyle = bodyGrad;
+                ctx.save();
+                ctx.translate(-22, 0);
+                ctx.rotate(-0.3);
+                ctx.beginPath();
+                ctx.ellipse(0, 0, 12, 8, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+                
+                ctx.save();
+                ctx.translate(22, 0);
+                ctx.rotate(0.3);
+                ctx.beginPath();
+                ctx.ellipse(0, 0, 12, 8, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+
+                // Tiny feet
+                ctx.beginPath();
+                ctx.ellipse(-12, 32, 10, 7, 0, 0, Math.PI * 2);
+                ctx.ellipse(12, 32, 10, 7, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Power glow
+                if (this.powerTimer > 0) {
+                    ctx.shadowColor = '#ffd93d';
+                    ctx.shadowBlur = 25;
+                    ctx.strokeStyle = '#ffd93d';
+                    ctx.lineWidth = 2.5;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 38, 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+
+                ctx.restore();
             }
 
             isOffscreen() {
