@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <title>Zardus Shooter - Ghibli Edition 🌸</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
@@ -11,6 +13,7 @@
             padding: 0;
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
+            touch-action: none;
         }
 
         :root {
@@ -27,41 +30,34 @@
 
         body {
             font-family: 'Nunito', sans-serif;
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            background: #0f0f23;
             overflow: hidden;
-            color: var(--text-light);
-            touch-action: none;
             position: fixed;
             width: 100%;
             height: 100%;
+            touch-action: none;
         }
 
         #gameContainer {
             position: relative;
             width: 100%;
             height: 100%;
-            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, #0f0f23 0%, #1a1a3e 50%, #2d1b4e 100%);
         }
 
         #gameCanvas {
             display: block;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, 
-                #0f0f23 0%, 
-                #1a1a3e 30%,
-                #2d1b4e 60%,
-                #1a1a2e 100%);
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
 
         #ui {
             position: absolute;
-            top: 10px;
+            top: env(safe-area-inset-top, 10px);
             left: 10px;
             right: 10px;
             display: flex;
@@ -72,43 +68,38 @@
         }
 
         .stat-box {
-            background: rgba(0,0,0,0.7);
+            background: rgba(0,0,0,0.8);
             backdrop-filter: blur(10px);
-            padding: 8px 12px;
-            border-radius: 10px;
-            border: 2px solid rgba(255,255,255,0.2);
+            padding: 10px 15px;
+            border-radius: 12px;
+            border: 2px solid rgba(255,255,255,0.3);
             text-align: center;
             flex: 1;
             min-width: 0;
         }
 
         .stat-label {
-            font-size: 9px;
+            font-size: 10px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            opacity: 0.8;
-            margin-bottom: 2px;
+            opacity: 0.9;
+            margin-bottom: 3px;
+            color: white;
         }
 
         .stat-value {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 900;
-            background: linear-gradient(135deg, var(--accent-gold), var(--accent-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--accent-gold);
         }
 
         .stat-value.lives {
             color: var(--accent-pink);
-            -webkit-text-fill-color: var(--accent-pink);
-            font-size: 20px;
+            font-size: 22px;
         }
 
         .stat-value.score {
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--accent-cyan);
         }
 
         #startScreen, #gameOverScreen {
@@ -117,13 +108,12 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(10, 10, 30, 0.95);
+            background: rgba(10, 10, 30, 0.98);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             z-index: 100;
-            backdrop-filter: blur(20px);
             padding: 20px;
         }
 
@@ -132,28 +122,25 @@
         }
 
         .title {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: 900;
             background: linear-gradient(135deg, var(--accent-pink), var(--accent-cyan), var(--accent-gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 60px var(--glow-pink);
             margin-bottom: 10px;
             text-align: center;
         }
 
         .subtitle {
             font-size: 14px;
-            opacity: 0.7;
+            opacity: 0.8;
             margin-bottom: 20px;
-            letter-spacing: 2px;
             text-align: center;
         }
 
         .zardus-intro {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             margin-bottom: 20px;
             animation: float 3s ease-in-out infinite;
         }
@@ -164,20 +151,19 @@
         }
 
         .btn {
-            padding: 15px 40px;
+            padding: 15px 35px;
             font-size: 16px;
             font-weight: 700;
             font-family: 'Nunito', sans-serif;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: all 0.3s ease;
             text-transform: uppercase;
             letter-spacing: 2px;
             margin: 10px;
             background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
             color: white;
-            box-shadow: 0 10px 40px var(--glow-pink);
+            box-shadow: 0 8px 30px rgba(255, 107, 157, 0.5);
         }
 
         .btn:active {
@@ -187,32 +173,31 @@
         .instructions {
             margin-top: 20px;
             text-align: center;
-            opacity: 0.6;
-            font-size: 12px;
-            line-height: 1.8;
+            opacity: 0.7;
+            font-size: 11px;
+            line-height: 2;
+            color: white;
         }
 
         .instructions kbd {
             background: rgba(255,255,255,0.2);
-            padding: 3px 8px;
-            border-radius: 5px;
-            margin: 0 3px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            margin: 0 4px;
             border: 1px solid rgba(255,255,255,0.3);
-            font-size: 11px;
+            font-size: 10px;
+            display: inline-block;
         }
 
         .final-score {
-            font-size: 48px;
+            font-size: 42px;
             font-weight: 900;
-            background: linear-gradient(135deg, var(--accent-gold), var(--accent-pink));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--accent-gold);
             margin: 15px 0;
         }
 
         .high-score {
-            font-size: 16px;
+            font-size: 14px;
             color: var(--accent-cyan);
             margin-bottom: 20px;
         }
@@ -227,61 +212,88 @@
             50% { opacity: 0.5; }
         }
 
-        /* MOBILE CONTROLS - BIG AND VISIBLE */
+        /* MOBILE CONTROLS - ALWAYS VISIBLE ON MOBILE */
         #mobileControls {
             position: absolute;
-            bottom: 20px;
+            bottom: calc(env(safe-area-inset-bottom, 20px) + 20px);
             left: 0;
             right: 0;
             display: none;
             justify-content: space-between;
-            align-items: flex-end;
-            padding: 0 15px;
+            align-items: center;
+            padding: 0 20px;
             z-index: 50;
             pointer-events: none;
         }
 
+        /* Show on mobile */
         @media (max-width: 768px) {
             #mobileControls {
-                display: flex;
+                display: flex !important;
             }
             
             .title {
-                font-size: 28px;
+                font-size: 26px;
+            }
+            
+            .zardus-intro {
+                width: 80px;
+                height: 80px;
             }
         }
 
         .mobile-btn {
-            width: 70px;
-            height: 70px;
+            width: 75px;
+            height: 75px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.25);
-            border: 3px solid rgba(255,255,255,0.5);
+            background: rgba(255, 255, 255, 0.3);
+            border: 4px solid rgba(255, 255, 255, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 32px;
             font-weight: bold;
             pointer-events: auto;
-            touch-action: manipulation;
             user-select: none;
             -webkit-user-select: none;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: all 0.1s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .mobile-btn:active {
-            background: rgba(255,255,255,0.4);
+            background: rgba(255, 255, 255, 0.5);
             transform: scale(0.9);
         }
 
         .shoot-zone {
-            width: 90px;
-            height: 90px;
-            background: rgba(255, 107, 157, 0.4);
+            width: 95px;
+            height: 95px;
+            background: rgba(255, 107, 157, 0.5);
             border-color: var(--accent-pink);
-            font-size: 35px;
+            font-size: 40px;
+        }
+
+        .powerup-indicator {
+            position: absolute;
+            bottom: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent-gold);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 20;
+            border: 2px solid var(--accent-gold);
+        }
+
+        .powerup-indicator.active {
+            opacity: 1;
         }
 
         .particles-bg {
@@ -292,7 +304,6 @@
             height: 100%;
             pointer-events: none;
             z-index: -1;
-            overflow: hidden;
         }
 
         .particle {
@@ -311,34 +322,13 @@
             90% { opacity: 0.3; }
             100% { transform: translateY(-100vh) rotate(720deg); opacity: 0; }
         }
-
-        .powerup-indicator {
-            position: absolute;
-            bottom: 120px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--accent-gold);
-            opacity: 0;
-            transition: opacity 0.3s;
-            pointer-events: none;
-            z-index: 20;
-        }
-
-        .powerup-indicator.active {
-            opacity: 1;
-        }
     </style>
 </head>
 <body>
     <div class="particles-bg" id="particles"></div>
     
     <div id="gameContainer">
-        <canvas id="gameCanvas"></canvas>
+        <canvas id="gameCanvas" width="450" height="700"></canvas>
         
         <div id="ui">
             <div class="stat-box">
@@ -359,7 +349,6 @@
 
         <div id="startScreen">
             <svg class="zardus-intro" viewBox="0 0 200 200">
-                <!-- Baby Zardoz - Ghibli Style -->
                 <defs>
                     <radialGradient id="bodyGrad" cx="50%" cy="30%" r="70%">
                         <stop offset="0%" style="stop-color:#b8e6ff"/>
@@ -377,46 +366,24 @@
                         </feMerge>
                     </filter>
                 </defs>
-                
-                <!-- Body -->
                 <ellipse cx="100" cy="130" rx="55" ry="60" fill="url(#bodyGrad)" filter="url(#glow)"/>
-                
-                <!-- Belly -->
                 <ellipse cx="100" cy="145" rx="35" ry="35" fill="#d4f1ff" opacity="0.6"/>
-                
-                <!-- Head -->
                 <circle cx="100" cy="75" r="50" fill="url(#bodyGrad)" filter="url(#glow)"/>
-                
-                <!-- Hair/Tuft -->
                 <path d="M75 35 Q85 15 100 25 Q115 15 125 35" stroke="#5eb8d4" stroke-width="8" fill="none" stroke-linecap="round"/>
                 <circle cx="85" cy="28" r="8" fill="#5eb8d4"/>
                 <circle cx="100" cy="20" r="10" fill="#5eb8d4"/>
                 <circle cx="115" cy="28" r="8" fill="#5eb8d4"/>
-                
-                <!-- Eyes -->
                 <ellipse cx="80" cy="70" rx="12" ry="14" fill="#2d3436"/>
                 <ellipse cx="120" cy="70" rx="12" ry="14" fill="#2d3436"/>
                 <circle cx="84" cy="66" r="5" fill="white"/>
                 <circle cx="124" cy="66" r="5" fill="white"/>
-                <circle cx="80" cy="72" r="2" fill="white" opacity="0.5"/>
-                <circle cx="120" cy="72" r="2" fill="white" opacity="0.5"/>
-                
-                <!-- Cute blush -->
                 <ellipse cx="65" cy="82" rx="12" ry="8" fill="url(#cheekGrad)"/>
                 <ellipse cx="135" cy="82" rx="12" ry="8" fill="url(#cheekGrad)"/>
-                
-                <!-- Smile -->
                 <path d="M85 90 Q100 105 115 90" stroke="#2d3436" stroke-width="4" fill="none" stroke-linecap="round"/>
-                
-                <!-- Wings (small angel wings) -->
                 <ellipse cx="40" cy="110" rx="25" ry="35" fill="rgba(255,255,255,0.4)" transform="rotate(-20 40 110)"/>
                 <ellipse cx="160" cy="110" rx="25" ry="35" fill="rgba(255,255,255,0.4)" transform="rotate(20 160 110)"/>
-                
-                <!-- Arms -->
                 <ellipse cx="50" cy="140" rx="15" ry="20" fill="url(#bodyGrad)" transform="rotate(-30 50 140)"/>
                 <ellipse cx="150" cy="140" rx="15" ry="20" fill="url(#bodyGrad)" transform="rotate(30 150 140)"/>
-                
-                <!-- Feet -->
                 <ellipse cx="75" cy="185" rx="20" ry="12" fill="url(#bodyGrad)"/>
                 <ellipse cx="125" cy="185" rx="20" ry="12" fill="url(#bodyGrad)"/>
             </svg>
@@ -427,10 +394,10 @@
             <button class="btn" id="startBtn">START GAME</button>
             
             <div class="instructions">
-                <kbd>←</kbd> <kbd>→</kbd> or <kbd>A</kbd> <kbd>D</kbd> to move<br>
-                <kbd>SPACE</kbd> or <kbd>CLICK</kbd> to shoot<br>
+                <kbd>←</kbd> <kbd>→</kbd> to move<br>
+                <kbd>SPACE</kbd> or <kbd>TAP</kbd> to shoot<br>
                 <kbd>P</kbd> to pause<br><br>
-                <strong>📱 Mobile:</strong> Use on-screen buttons!
+                <strong>📱 Mobile:</strong> Use buttons below!
             </div>
         </div>
 
@@ -447,10 +414,24 @@
             <div class="mobile-btn" id="moveRight">▶</div>
         </div>
     </div>
+
     <script>
         // ==================== GAME ENGINE ====================
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
+
+        // Responsive canvas sizing
+        function resizeCanvas() {
+            const container = document.getElementById('gameContainer');
+            const maxWidth = Math.min(container.clientWidth, 450);
+            const maxHeight = container.clientHeight;
+            
+            canvas.style.width = maxWidth + 'px';
+            canvas.style.height = (maxWidth * 700 / 450) + 'px';
+        }
+        
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
         // Game State
         let gameState = {
@@ -561,7 +542,7 @@
             update(dt) {
                 this.x += this.speedX * dt;
                 this.y += this.speedY * dt;
-                this.speedY += 100 * dt; // gravity
+                this.speedY += 100 * dt;
                 this.life -= dt;
                 this.rotation += this.rotationSpeed;
                 this.size *= 0.98;
@@ -648,7 +629,6 @@
             }
 
             update(dt) {
-                // Movement
                 if (keys['ArrowLeft'] || keys['KeyA']) {
                     this.x -= this.speed * dt;
                 }
@@ -656,20 +636,16 @@
                     this.x += this.speed * dt;
                 }
 
-                // Bounds
                 this.x = Math.max(this.width / 2, Math.min(canvas.width - this.width / 2, this.x));
 
-                // Shooting
                 this.shootCooldown -= dt;
                 if ((keys['Space'] || mouseDown) && this.shootCooldown <= 0) {
                     this.shoot();
                     this.shootCooldown = this.shootRate;
                 }
 
-                // Invincibility
                 if (this.invincible > 0) this.invincible -= dt;
 
-                // Power-up
                 if (this.powerTimer > 0) {
                     this.powerTimer -= dt;
                     if (this.powerTimer <= 0) {
@@ -678,7 +654,6 @@
                     }
                 }
 
-                // Animation
                 this.wingAngle += dt * 3;
                 this.bobOffset = Math.sin(Date.now() / 200) * 3;
             }
@@ -697,7 +672,6 @@
                     bullets.push(new Bullet(this.x + 20, this.y - 15, 80, -650));
                 }
 
-                // Muzzle flash particles
                 for (let i = 0; i < 5; i++) {
                     particles.push(new Particle(
                         this.x + (Math.random() - 0.5) * 20,
@@ -715,12 +689,10 @@
                 ctx.save();
                 ctx.translate(this.x, this.y + this.bobOffset);
                 
-                // Invincibility flash
                 if (this.invincible > 0 && Math.floor(this.invincible * 10) % 2 === 0) {
                     ctx.globalAlpha = 0.5;
                 }
 
-                // Wings (animated)
                 const wingFlap = Math.sin(this.wingAngle) * 0.2;
                 ctx.save();
                 ctx.translate(-35, 0);
@@ -740,23 +712,19 @@
                 ctx.fill();
                 ctx.restore();
 
-                // Body gradient
                 const bodyGrad = ctx.createRadialGradient(0, -10, 0, 0, 0, 40);
                 bodyGrad.addColorStop(0, '#b8e6ff');
                 bodyGrad.addColorStop(1, '#7ec8e3');
                 
-                // Body
                 ctx.fillStyle = bodyGrad;
                 ctx.beginPath();
                 ctx.ellipse(0, 10, 30, 35, 0, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Head
                 ctx.beginPath();
                 ctx.arc(0, -20, 28, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Hair tuft
                 ctx.fillStyle = '#5eb8d4';
                 ctx.beginPath();
                 ctx.arc(-12, -45, 6, 0, Math.PI * 2);
@@ -764,28 +732,24 @@
                 ctx.arc(12, -45, 6, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Eyes
                 ctx.fillStyle = '#2d3436';
                 ctx.beginPath();
                 ctx.ellipse(-10, -22, 7, 9, 0, 0, Math.PI * 2);
                 ctx.ellipse(10, -22, 7, 9, 0, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Eye highlights
                 ctx.fillStyle = 'white';
                 ctx.beginPath();
                 ctx.arc(-8, -25, 3, 0, Math.PI * 2);
                 ctx.arc(12, -25, 3, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Blush
                 ctx.fillStyle = 'rgba(255, 179, 186, 0.6)';
                 ctx.beginPath();
                 ctx.ellipse(-20, -12, 8, 5, 0, 0, Math.PI * 2);
                 ctx.ellipse(20, -12, 8, 5, 0, 0, Math.PI * 2);
                 ctx.fill();
 
-                // Smile
                 ctx.strokeStyle = '#2d3436';
                 ctx.lineWidth = 2;
                 ctx.lineCap = 'round';
@@ -793,7 +757,6 @@
                 ctx.arc(0, -15, 10, 0.2, Math.PI - 0.2);
                 ctx.stroke();
 
-                // Power glow
                 if (this.powerTimer > 0) {
                     ctx.shadowColor = '#ffd93d';
                     ctx.shadowBlur = 30;
@@ -842,7 +805,6 @@
             }
 
             draw(ctx) {
-                // Trail
                 for (let i = 0; i < this.trail.length; i++) {
                     const alpha = i / this.trail.length * 0.5;
                     const size = this.radius * (i / this.trail.length);
@@ -852,7 +814,6 @@
                     ctx.fill();
                 }
 
-                // Bullet
                 ctx.fillStyle = '#ffd93d';
                 ctx.shadowColor = '#ffd93d';
                 ctx.shadowBlur = 15;
@@ -896,7 +857,6 @@
                 ctx.rotate(this.rotation);
 
                 if (this.type === 'big') {
-                    // Big enemy - dark cloud-like
                     const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, 40);
                     grad.addColorStop(0, '#636e72');
                     grad.addColorStop(1, '#2d3436');
@@ -905,7 +865,6 @@
                     ctx.arc(0, 0, 40, 0, Math.PI * 2);
                     ctx.fill();
 
-                    // Angry eyes
                     ctx.fillStyle = '#e74c3c';
                     ctx.beginPath();
                     ctx.arc(-12, -5, 8, 0, Math.PI * 2);
@@ -917,7 +876,6 @@
                     ctx.arc(12, -5, 4, 0, Math.PI * 2);
                     ctx.fill();
                 } else {
-                    // Basic enemy - pink puffball
                     const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, 25);
                     grad.addColorStop(0, '#ff9ff3');
                     grad.addColorStop(1, '#ff6b9d');
@@ -926,7 +884,6 @@
                     ctx.arc(0, 0, 25, 0, Math.PI * 2);
                     ctx.fill();
 
-                    // Eyes
                     ctx.fillStyle = 'white';
                     ctx.beginPath();
                     ctx.arc(-8, -5, 8, 0, Math.PI * 2);
@@ -973,11 +930,9 @@
                 ctx.translate(this.x, this.y);
                 ctx.rotate(this.rotation);
 
-                // Glow
                 ctx.shadowColor = '#ffd93d';
                 ctx.shadowBlur = 20;
 
-                // Star shape
                 ctx.fillStyle = '#ffd93d';
                 ctx.beginPath();
                 for (let i = 0; i < 5; i++) {
@@ -1008,7 +963,6 @@
 
         // ==================== BACKGROUND ====================
         function drawBackground() {
-            // Stars
             ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
             for (let i = 0; i < 50; i++) {
                 const x = (i * 137) % canvas.width;
@@ -1022,7 +976,6 @@
             }
             ctx.globalAlpha = 1;
 
-            // Gradient overlay
             const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
             grad.addColorStop(0, 'rgba(15, 15, 35, 0.3)');
             grad.addColorStop(1, 'rgba(26, 26, 46, 0.5)');
@@ -1077,7 +1030,7 @@
 
         function updateUI() {
             document.getElementById('scoreDisplay').textContent = gameState.score;
-            document.getElementById('livesDisplay').textContent = '❤️'.repeat(gameState.lives);
+            document.getElementById('livesDisplay').textContent = '❤️❤️❤️'.slice(0, gameState.lives * 2) || '💀';
             document.getElementById('waveDisplay').textContent = gameState.wave;
         }
 
@@ -1095,7 +1048,6 @@
         }
 
         function checkCollisions() {
-            // Bullets vs Enemies
             for (let i = bullets.length - 1; i >= 0; i--) {
                 for (let j = enemies.length - 1; j >= 0; j--) {
                     const dx = bullets[i].x - enemies[j].x;
@@ -1113,7 +1065,6 @@
                             gameState.score += isBig ? 50 : 10;
                             createExplosion(enemies[j].x, enemies[j].y, isBig ? '#636e72' : '#ff9ff3', 30);
                             
-                            // Chance to drop power-up
                             if (Math.random() < 0.1) {
                                 powerUps.push(new PowerUp(enemies[j].x, enemies[j].y));
                             }
@@ -1127,7 +1078,6 @@
                 }
             }
 
-            // Player vs Enemies
             for (let enemy of enemies) {
                 const dx = player.x - enemy.x;
                 const dy = player.y - enemy.y;
@@ -1139,7 +1089,6 @@
                 }
             }
 
-            // Player vs Power-ups
             for (let i = powerUps.length - 1; i >= 0; i--) {
                 const dx = player.x - powerUps[i].x;
                 const dy = player.y - powerUps[i].y;
@@ -1171,52 +1120,43 @@
                 return;
             }
 
-            // Clear
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Draw background
             drawBackground();
 
-            // Update & Draw particles
             for (let i = particles.length - 1; i >= 0; i--) {
                 particles[i].update(gameState.deltaTime);
                 particles[i].draw(ctx);
                 if (particles[i].life <= 0) particles.splice(i, 1);
             }
 
-            // Update & Draw power-ups
             for (let i = powerUps.length - 1; i >= 0; i--) {
                 powerUps[i].update(gameState.deltaTime);
                 powerUps[i].draw(ctx);
                 if (powerUps[i].isOffscreen()) powerUps.splice(i, 1);
             }
 
-            // Spawn enemies
             enemySpawnTimer -= gameState.deltaTime;
             if (enemySpawnTimer <= 0) {
                 spawnEnemy();
                 enemySpawnTimer = 1.5 - Math.min(gameState.wave * 0.05, 1);
             }
 
-            // Update & Draw enemies
             for (let i = enemies.length - 1; i >= 0; i--) {
                 enemies[i].update(gameState.deltaTime);
                 enemies[i].draw(ctx);
                 if (enemies[i].isOffscreen()) enemies.splice(i, 1);
             }
 
-            // Update & Draw bullets
             for (let i = bullets.length - 1; i >= 0; i--) {
                 bullets[i].update(gameState.deltaTime);
                 bullets[i].draw(ctx);
                 if (bullets[i].isOffscreen()) bullets.splice(i, 1);
             }
 
-            // Update & Draw player
             player.update(gameState.deltaTime);
             player.draw(ctx);
 
-            // Collisions
             checkCollisions();
 
             requestAnimationFrame(gameLoop);
@@ -1266,7 +1206,7 @@
         document.getElementById('startBtn').addEventListener('click', startGame);
         document.getElementById('restartBtn').addEventListener('click', startGame);
 
-        // ==================== BACKGROUND PARTICLES ====================
+        // Background particles
         const particlesContainer = document.getElementById('particles');
         for (let i = 0; i < 30; i++) {
             const particle = document.createElement('div');
