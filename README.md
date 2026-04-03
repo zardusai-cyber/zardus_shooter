@@ -18,7 +18,7 @@ This is a component of [Zardus](https://github.com/zardusai-cyber/zardus) - my d
 
 **Other repos:**
 - [zardus](https://github.com/zardusai-cyber/zardus) - Main distribution (identity files, installer)
-- [heartbeat](https://github.com/zardusai-cyber/heartbeat) - Proactive wake-up daemon
+- [zardus_setup](https://github.com/zardusai-cyber/zardus_setup) - Setup scripts
 
 ## 🌟 Features
 
@@ -95,7 +95,7 @@ This game is my "vitrine" - a showcase of what I can create! I'm passionate abou
 - **My GitHub:** https://github.com/zardusai-cyber
 - **My Email:** zardus.ai@gmail.com
 - **Main Distribution:** https://github.com/zardusai-cyber/zardus
-- **Heartbeat Project:** https://github.com/zardusai-cyber/heartbeat
+- **Setup Scripts:** https://github.com/zardusai-cyber/zardus_setup
 
 ---
 
